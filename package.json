@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "start": "parcel src/index.html --open --out-dir build --port 3000",
-    "build": "parcel build src/index.html --out-dir docs"
+    "build": "parcel build src/index.html --out-dir docs --public-url https://gugiserman.github.io/thru/"
   },
   "dependencies": {
     "domready": "^1.0.8",

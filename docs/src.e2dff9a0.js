@@ -21,4 +21,4 @@ var r;!function(e,n){if("object"==typeof exports){var t=n();"object"==typeof mod
 },{"./Game":"etho","./World":"ofZm","./Obstacle":"Jvv/","./Player":"Noz8","./Score":"/DGc"}],"Focm":[function(require,module,exports) {
 "use strict";require("normalize.css");var e=t(require("domready")),r=require("./components");function t(e){return e&&e.__esModule?e:{default:e}}var u=function(){return new r.Game(document.getElementById("thru"))};(0,e.default)(u);
 },{"normalize.css":"DOAq","domready":"NDqt","./components":"8/iA"}]},{},["Focm"], null)
-//# sourceMappingURL=/src.e2dff9a0.map
+//# sourceMappingURL=https://gugiserman.github.io/thru/src.e2dff9a0.map
