@@ -6,7 +6,7 @@ class Game {
     this.canvas = container.getContext('2d')
 
     this.world = new World(this.container, this.canvas)
-    this.obstacle = new Obstacle(this.container, this.canvas, this.world)
+    this.obstacles = [new Obstacle(this.container, this.canvas, this.world)]
     this.player = new Player(this.container, this.canvas, this.world)
 
     this.setup().then(() => {
@@ -38,8 +38,8 @@ class Game {
     }
 
     this.world.resize()
-    this.obstacle.resize()
     this.player.resize()
+    this.obstacles.forEach(obstacle => obstacle.resize())
 
     if (!silently) {
       return this.render()
@@ -50,12 +50,39 @@ class Game {
     window.addEventListener('resize', () => this.resize())
   }
 
+  checkCollision() {
+    return this.obstacles.some(obstacle => {
+      const obstacleBottom = (obstacle.y + 1)
+      const playerBottom = (this.player.y + 1)
+
+      if (
+        (obstacleBottom >= this.player.y) &&
+        (obstacle.y <= playerBottom)
+      ) {
+        if (obstacle.missingX !== this.player.x) {
+          return true
+        } else {
+          this.player.paint(obstacle.fill)
+          return false
+        }
+      } else {
+        this.player.paint()
+        return false
+      }
+    })
+  }
+
   render() {
     this.canvas.clearRect(0, 0, this.container.width, this.container.height)
 
     this.world.render()
-    this.obstacle.render()
     this.player.render()
+    this.obstacles.forEach(obstacle => obstacle.render())
+
+    if (this.checkCollision()) {
+      console.log('oi')
+      return false
+    }
 
     window.requestAnimationFrame(this.render.bind(this))
   }

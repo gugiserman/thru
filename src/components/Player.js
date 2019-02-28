@@ -5,6 +5,7 @@ class Player {
     this.world = world
 
     this.size = -1
+    this.fill = '#333333'
     this.x = this.getStartingX()
     this.y = this.getStartingY()
 
@@ -38,9 +39,13 @@ class Player {
     return Math.floor(this.world.rows / 1.5)
   }
 
+  paint(color = '#333333') {
+    this.fill = color
+  }
+
   render() {
     this.canvas.beginPath()
-    this.canvas.fillStyle = '#000000'
+    this.canvas.fillStyle = this.fill
     this.canvas.strokeStyle = '#fafafa'
     this.canvas.rect((this.x * this.size), (this.y * this.size), this.size, this.size)
     this.canvas.fill()

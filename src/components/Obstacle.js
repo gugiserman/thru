@@ -14,6 +14,7 @@ class Obstacle {
   }
 
   getRandomFill() {
+    return unique_shuffled_colors(1)
   }
 
   getRandomMissingX() {
@@ -42,7 +43,7 @@ class Obstacle {
       const y = (this.y * tileSize)
 
       this.canvas.beginPath()
-      this.canvas.fillStyle = '#ddd'
+      this.canvas.fillStyle = this.fill
       this.canvas.strokeStyle = '#fafafa'
       this.canvas.rect(x, y, tileSize, tileSize)
       this.canvas.fill()
