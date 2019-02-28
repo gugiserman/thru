@@ -18,9 +18,9 @@ class World {
     }
   }
 
-  drawLine(x1, y1, x2, y2) {
+  drawLine(x1, y1, x2, y2, color = '#fafafa') {
     this.canvas.beginPath()
-    this.canvas.strokeStyle = '#fafafa'
+    this.canvas.strokeStyle = color
     this.canvas.lineWidth = 1
     this.canvas.moveTo(x1, y1)
     this.canvas.lineTo(x2, y2)
@@ -45,7 +45,9 @@ class World {
       const toX = this.container.width
       const toY = fromY
 
-      this.drawLine(fromX, fromY, toX, toY)
+      const color = (i === (this.rows - 7)) ? '#666666' : undefined
+
+      this.drawLine(fromX, fromY, toX, toY, color)
     }
   }
 }

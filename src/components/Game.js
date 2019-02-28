@@ -95,9 +95,9 @@ class Game {
   handleObstacleFinished() {
     const finishedObstacles = this.obstacles.filter(obstacle => obstacle.finished && !obstacle.hidden)
 
-    if (finishedObstacles.length > 5) {
+    if (finishedObstacles.length > 7) {
       this.score.up()
-      finishedObstacles.forEach(obstacle => obstacle.paint('#333333'))
+      finishedObstacles.forEach(obstacle => obstacle.paint('#888888'))
 
       window.setTimeout(() => {
         finishedObstacles.forEach(obstacle => obstacle.hide())
@@ -112,7 +112,7 @@ class Game {
         this.canvas,
         this.world,
         this.obstacles.length,
-        (this.obstacles.length % 6),
+        (this.obstacles.length % 8),
         this.score,
         this.handleObstacleFinished.bind(this),
       )
@@ -123,6 +123,7 @@ class Game {
     return this.obstacles.some(obstacle => {
       if (obstacle.y > this.player.y && (obstacle.missingX >= 0)) {
         obstacle.complete()
+        obstacle.paint('#333333')
         this.spawnObstacle()
       }
 
@@ -153,6 +154,7 @@ class Game {
     this.checkCollision()
 
     if (this.score.points < 0) {
+      this.score.render()
       return null
     }
 

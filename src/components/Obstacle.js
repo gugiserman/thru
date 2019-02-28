@@ -1,4 +1,4 @@
-import { unique_colors } from 'unique-colors'
+import randomColor from 'randomcolor'
 
 class Obstacle {
   constructor(container, canvas, world, index, positionalIndex, score, onFinish) {
@@ -10,10 +10,11 @@ class Obstacle {
 
     this.x = 0
     this.y = 0
-    this.rate = ((.25 - (score.points * .01)) * 1000)
-    this._fill = this.getRandomFill()
-    this.fill = this.getRandomFill()
     this.missingX = this.getRandomMissingX()
+    this.rate = ((.2 - (score.points * .01)) * 1000)
+
+    this._fill = this.getRandomFill()
+    this.fill = this._fill
 
     this.collided = false
     this.hidden = false
@@ -24,7 +25,7 @@ class Obstacle {
   }
 
   getRandomFill() {
-    return unique_colors(1)
+    return randomColor()
   }
 
   getRandomMissingX() {
@@ -98,7 +99,10 @@ class Obstacle {
       this.canvas.strokeStyle = '#fafafa'
       this.canvas.rect(x, y, tileSize, tileSize)
       this.canvas.fill()
-      this.canvas.stroke()
+
+      if (this.missingX >= 0) {
+        this.canvas.stroke()
+      }
     }
 
     if (this.world.columns > 0 && !this.interval) {
