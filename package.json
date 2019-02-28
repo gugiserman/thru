@@ -1,6 +1,6 @@
 {
   "name": "thru",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Thru game",
   "main": "src/index.js",
   "author": "gugiserman@gmail.com",
