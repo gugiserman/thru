@@ -36,7 +36,15 @@ class Player {
       return -1
     }
 
-    return Math.floor(this.world.rows / 1.5)
+    return Math.floor(this.world.rows / 2)
+  }
+
+  moveLeft() {
+    this.x--
+  }
+
+  moveRight() {
+    this.x++
   }
 
   paint(color = '#333333') {

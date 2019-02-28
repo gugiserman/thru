@@ -1,20 +1,26 @@
-import { unique_shuffled_colors } from 'unique-colors'
+import { unique_colors } from 'unique-colors'
 
 class Obstacle {
-  constructor(container, canvas, world) {
+  constructor(container, canvas, world, index, onFinish) {
     this.container = container
     this.canvas = canvas
     this.world = world
+    this.index = index
 
     this.x = 0
     this.y = 0
-    this.rate = 0.08
+    this.rate = ((.5 - (index * .025)) * 1000)
     this.fill = this.getRandomFill()
     this.missingX = this.getRandomMissingX()
+
+    this.finished = false
+    this.interval = null
+
+    this.onFinish = onFinish
   }
 
   getRandomFill() {
-    return unique_shuffled_colors(1)
+    return unique_colors(1)
   }
 
   getRandomMissingX() {
@@ -29,6 +35,31 @@ class Obstacle {
     if (this.missingX < 0) {
       this.missingX = this.getRandomMissingX()
     }
+  }
+
+  fall() {
+    if (this.y < (this.world.rows - this.index)) {
+      this.y += 1
+
+      if (this.y >= (this.world.rows - this.index)) {
+        window.clearInterval(this.interval)
+        this.interval = null
+        this.finish()
+      }
+    }
+  }
+
+  complete() {
+    this.missingX = -1
+  }
+
+  finish() {
+    this.finished = true
+    this.onFinish()
+  }
+
+  loop() {
+    this.interval = window.setInterval(this.fall.bind(this), this.rate)
   }
 
   render() {
@@ -50,8 +81,8 @@ class Obstacle {
       this.canvas.stroke()
     }
 
-    if ((this.world.columns > 0) && (this.y < this.world.rows)) {
-      this.y += this.rate
+    if (this.world.columns > 0 && !this.interval) {
+      this.loop()
     }
   }
 }

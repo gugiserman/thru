@@ -6,8 +6,10 @@ class Game {
     this.canvas = container.getContext('2d')
 
     this.world = new World(this.container, this.canvas)
-    this.obstacles = [new Obstacle(this.container, this.canvas, this.world)]
+    this.obstacles = [new Obstacle(this.container, this.canvas, this.world, 0, this.handleObstacleFinished.bind(this))]
     this.player = new Player(this.container, this.canvas, this.world)
+
+    this.score = 0
 
     this.setup().then(() => {
       this.resize(true)
@@ -46,19 +48,48 @@ class Game {
     }
   }
 
+  handleTouch(event) {
+    const { pageX: targetX, pageY: targetY } = (event.touches[0] || {})
+
+    const centerX = Math.floor(this.container.width / 2)
+    const centerY = Math.floor(this.container.height / 2)
+
+    if (targetX < centerX) {
+      this.player.moveLeft()
+    } else {
+      this.player.moveRight()
+    }
+  }
+
   bind() {
     window.addEventListener('resize', () => this.resize())
+    this.container.addEventListener('touchstart', this.handleTouch.bind(this))
+  }
+
+  handleObstacleFinished() {
+    const finishedObstacles = this.obstacles.filter(obstacle => obstacle.finished)
+    const finishedObstaclesIndexes = finishedObstacles.map(obstacle => obstacle.index)
+
+    if (finishedObstacles.length > 4) {
+      this.score++
+      this.obstacles = this.obstacles.filter(obstacle => !finishedObstaclesIndexes.includes(obstacle.index))
+    }
+  }
+
+  spawnObstacle() {
+    this.obstacles.push(
+      new Obstacle(this.container, this.canvas, this.world, this.obstacles.length, this.handleObstacleFinished.bind(this))
+    )
   }
 
   checkCollision() {
     return this.obstacles.some(obstacle => {
-      const obstacleBottom = (obstacle.y + 1)
-      const playerBottom = (this.player.y + 1)
+      if (obstacle.y > this.player.y && (obstacle.missingX >= 0)) {
+        obstacle.complete()
+        this.spawnObstacle()
+      }
 
-      if (
-        (obstacleBottom >= this.player.y) &&
-        (obstacle.y <= playerBottom)
-      ) {
+      if (obstacle.y === this.player.y) {
         if (obstacle.missingX !== this.player.x) {
           return true
         } else {
@@ -80,7 +111,6 @@ class Game {
     this.obstacles.forEach(obstacle => obstacle.render())
 
     if (this.checkCollision()) {
-      console.log('oi')
       return false
     }
 
