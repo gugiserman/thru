@@ -8,10 +8,13 @@
   "private": true,
   "scripts": {
     "start": "parcel src/index.html --open --out-dir build --port 3000",
-    "build": "parcel build src/index.html --out-dir dist"
+    "build": "parcel build src/index.html --out-dir docs"
   },
   "dependencies": {
     "domready": "^1.0.8",
     "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.10"
   }
 }
