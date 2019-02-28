@@ -12,7 +12,7 @@ class World {
 
   resize() {
     if (this.container.width && this.container.height) {
-      this.tileSize = 24
+      this.tileSize = 48
       this.columns = Math.floor(this.container.width / this.tileSize)
       this.rows = Math.floor(this.container.height / this.tileSize) - 1
     }

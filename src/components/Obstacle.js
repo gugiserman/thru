@@ -1,18 +1,22 @@
 import { unique_colors } from 'unique-colors'
 
 class Obstacle {
-  constructor(container, canvas, world, index, onFinish) {
+  constructor(container, canvas, world, index, positionalIndex, score, onFinish) {
     this.container = container
     this.canvas = canvas
     this.world = world
     this.index = index
+    this.positionalIndex = positionalIndex
 
     this.x = 0
     this.y = 0
-    this.rate = ((.5 - (index * .025)) * 1000)
+    this.rate = ((.25 - (score.points * .01)) * 1000)
+    this._fill = this.getRandomFill()
     this.fill = this.getRandomFill()
     this.missingX = this.getRandomMissingX()
 
+    this.collided = false
+    this.hidden = false
     this.finished = false
     this.interval = null
 
@@ -38,15 +42,19 @@ class Obstacle {
   }
 
   fall() {
-    if (this.y < (this.world.rows - this.index)) {
+    if (this.y < (this.world.rows - this.positionalIndex)) {
       this.y += 1
 
-      if (this.y >= (this.world.rows - this.index)) {
+      if (this.y >= (this.world.rows - this.positionalIndex)) {
         window.clearInterval(this.interval)
         this.interval = null
         this.finish()
       }
     }
+  }
+
+  collide() {
+    this.collided = true
   }
 
   complete() {
@@ -58,11 +66,23 @@ class Obstacle {
     this.onFinish()
   }
 
+  hide() {
+    this.hidden = true
+  }
+
   loop() {
     this.interval = window.setInterval(this.fall.bind(this), this.rate)
   }
 
+  paint(color) {
+    this.fill = color || this._fill
+  }
+
   render() {
+    if (this.hidden) {
+      return null
+    }
+
     const { columns, tileSize } = this.world
 
     for (let i = 0; i < this.world.columns; i++) {

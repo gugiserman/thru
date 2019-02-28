@@ -40,11 +40,23 @@ class Player {
   }
 
   moveLeft() {
-    this.x--
+    const nextX = (this.x - 1)
+
+    if (nextX < 0) {
+      return false
+    }
+
+    return this.x = nextX
   }
 
   moveRight() {
-    this.x++
+    const nextX = (this.x + 1)
+
+    if (nextX > (this.world.columns - 1)) {
+      return false
+    }
+
+    return this.x = nextX
   }
 
   paint(color = '#333333') {
