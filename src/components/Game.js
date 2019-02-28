@@ -1,10 +1,12 @@
-import { World, Player } from './'
+import { World, Player, Obstacle } from './'
 
 class Game {
   constructor(container) {
     this.container = container
     this.canvas = container.getContext('2d')
+
     this.world = new World(this.container, this.canvas)
+    this.obstacle = new Obstacle(this.container, this.canvas, this.world)
     this.player = new Player(this.container, this.canvas, this.world)
 
     this.setup().then(() => {
@@ -36,6 +38,7 @@ class Game {
     }
 
     this.world.resize()
+    this.obstacle.resize()
     this.player.resize()
 
     if (!silently) {
@@ -44,8 +47,6 @@ class Game {
   }
 
   bind() {
-    const animationId = window.requestAnimationFrame(this.render.bind(this))
-    window.onbeforeunload = () => window.cancelAnimationFrame(animationId)
     window.addEventListener('resize', () => this.resize())
   }
 
@@ -53,7 +54,10 @@ class Game {
     this.canvas.clearRect(0, 0, this.container.width, this.container.height)
 
     this.world.render()
+    this.obstacle.render()
     this.player.render()
+
+    window.requestAnimationFrame(this.render.bind(this))
   }
 }
 

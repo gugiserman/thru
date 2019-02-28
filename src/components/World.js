@@ -3,7 +3,7 @@ class World {
     this.container = container
     this.canvas = canvas
 
-    this.tileSize = 25
+    this.tileSize = 0
     this.columns = 0
     this.rows = 0
 
@@ -11,8 +11,11 @@ class World {
   }
 
   resize() {
-    this.columns = Math.floor(this.container.width / this.tileSize)
-    this.rows = Math.floor(this.container.height / this.tileSize)
+    if (this.container.width && this.container.height) {
+      this.tileSize = 24
+      this.columns = Math.floor(this.container.width / this.tileSize)
+      this.rows = Math.floor(this.container.height / this.tileSize) - 1
+    }
   }
 
   drawLine(x1, y1, x2, y2) {

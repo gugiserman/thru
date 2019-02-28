@@ -4,7 +4,7 @@ class Player {
     this.canvas = canvas
     this.world = world
 
-    this.size = this.world.tileSize
+    this.size = -1
     this.x = this.getStartingX()
     this.y = this.getStartingY()
 
@@ -12,6 +12,10 @@ class Player {
   }
 
   resize() {
+    if ((this.size < 0) && this.world.tileSize) {
+      this.size = this.world.tileSize
+    }
+
     if ((this.x < 0 || this.y < 0)) {
       this.x = this.getStartingX()
       this.y = this.getStartingY()
@@ -37,8 +41,10 @@ class Player {
   render() {
     this.canvas.beginPath()
     this.canvas.fillStyle = '#000000'
+    this.canvas.strokeStyle = '#fafafa'
     this.canvas.rect((this.x * this.size), (this.y * this.size), this.size, this.size)
     this.canvas.fill()
+    this.canvas.stroke()
   }
 }
 

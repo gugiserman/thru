@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "domready": "^1.0.8",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "unique-colors": "^1.0.1"
   },
   "devDependencies": {
     "cssnano": "^4.1.10"
